@@ -5,31 +5,53 @@ import (
 	"net/http"
 )
 
-type Ticket struct {
-	Otkuda string  `json:"otkuda"`
-	Kuda   string  `json:"kuda"`
-	Price  float64 `json:"price"`
+// в этих трех файлах описать структуры
+// создание анкеты и удаление анкеты
+// хранить объекты в слайсе базы данных
+//в анкете сервис создать структуру и интерфейс с методами доступными из внею структура должна реализовывать этот интерфейс.
+//	В контроллере описать еще раз этот интерфейс и работать с объектом который будет передаваться в мейн
+
+type Anketa struct {
+	Name        string `json:"name"`
+	Id          int    `json:"id"`
+	City        string `json:"city"`
+	Age         int    `json:"age"`
+	Weight      int    `json:"weight"`
+	Height      int    `json:"height"`
+	Boobs       int    `json:"bobs"`
+	HairColor   string `json:"hair_color"`
+	Nationality string `json:"nationality"`
+	District    string `json:"district"`
+	Price       int    `json:"price"`
 }
 
-func ticketHandler(w http.ResponseWriter, r *http.Request) {
-	ticket := Ticket{
-		Otkuda: "Москва",
-		Kuda:   "Санкт-Петербург",
-		Price:  4499.99,
+func anketaHandler(w http.ResponseWriter, r *http.Request) {
+	anketa := Anketa{
+		Name:        "Мишель",
+		Id:          123,
+		City:        "Moscow",
+		Age:         25,
+		Weight:      49,
+		Height:      175,
+		Boobs:       2,
+		HairColor:   "Блондинка",
+		Nationality: "Русская",
+		District:    "ЦСКА",
+		Price:       20000,
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(ticket)
+	json.NewEncoder(w).Encode(anketa)
 }
 
-func serviceHandler(w http.ResponseWriter, r *http.Request) {
-	service := NewServices(23, "Включено", "Ручная кладь")
+func clientsHandler(w http.ResponseWriter, r *http.Request) {
+	client := NewClients("Банановый чизкейк", 80)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(service)
+	json.NewEncoder(w).Encode(client)
 }
 
 func main() {
-	http.HandleFunc("/ticket", ticketHandler)
-	http.HandleFunc("/service", serviceHandler)
+	http.HandleFunc("/anketa", anketaHandler)
+	http.HandleFunc("/client", clientsHandler)
 
 	http.ListenAndServe(":8080", nil)
 }

@@ -1,15 +1,13 @@
 package main
 
-type Services struct {
-	Place   int    `json:"place"`
-	Food    string `json:"food"`
-	Baggage string `json:"baggage"`
+type Clients struct {
+	Name   string `json:"name"`
+	Rating int    `json:"rating"`
 }
 
-func NewServices(place int, food string, baggage string) Services {
-	return Services{
-		Place:   place,
-		Food:    food,
-		Baggage: baggage,
+func NewClients(name string, rating int) Clients {
+	return Clients{
+		Name:   name,
+		Rating: rating,
 	}
 }
