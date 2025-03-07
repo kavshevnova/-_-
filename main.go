@@ -58,8 +58,8 @@ func main() {
 	clientService := NewClientService(bd)
 	clientController := NewClientController(clientService)
 	http.HandleFunc("/client/create", clientController.CreateClientHandler)
-	http.HandleFunc("/anketa/delete", clientController.DeleteClientHandler)
-	http.HandleFunc("/anketa/get", clientController.GetClientHandler)
+	http.HandleFunc("/client/delete", clientController.DeleteClientHandler)
+	http.HandleFunc("/client/get", clientController.GetClientHandler)
 
 	http.ListenAndServe(":8080", nil)
 
