@@ -53,6 +53,13 @@ func main() {
 	anketaController := NewAnketaController(anketaService)
 	http.HandleFunc("/anketa/create", anketaController.CreateAnketaHandler)
 	http.HandleFunc("/anketa/delete", anketaController.DeleteAnketaHandler)
+	http.HandleFunc("/anketa/get", anketaController.GetAnketaHandler)
+	bd := NewDatabase_clients()
+	clientService := NewClientService(bd)
+	clientController := NewClientController(clientService)
+	http.HandleFunc("/client/create", clientController.CreateClientHandler)
+	http.HandleFunc("/anketa/delete", clientController.DeleteClientHandler)
+	http.HandleFunc("/anketa/get", clientController.GetClientHandler)
 
 	http.ListenAndServe(":8080", nil)
 
