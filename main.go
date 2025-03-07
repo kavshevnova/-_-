@@ -5,12 +5,6 @@ import (
 	"net/http"
 )
 
-// в этих трех файлах описать структуры
-// создание анкеты и удаление анкеты
-// хранить объекты в слайсе базы данных
-//в анкете сервис создать структуру и интерфейс с методами доступными из внею структура должна реализовывать этот интерфейс.
-//	В контроллере описать еще раз этот интерфейс и работать с объектом который будет передаваться в мейн
-
 type Anketa struct {
 	Name        string `json:"name"`
 	Id          int    `json:"id"`
@@ -50,8 +44,16 @@ func clientsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
 	http.HandleFunc("/anketa", anketaHandler)
 	http.HandleFunc("/client", clientsHandler)
 
+	db := NewDatabase()
+	anketaService := NewAnketaService(db)
+	anketaController := NewAnketaController(anketaService)
+	http.HandleFunc("/anketa/create", anketaController.CreateAnketaHandler)
+	http.HandleFunc("/anketa/delete", anketaController.DeleteAnketaHandler)
+
 	http.ListenAndServe(":8080", nil)
+
 }
