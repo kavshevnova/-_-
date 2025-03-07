@@ -1,17 +1,22 @@
-package main
+package Services
+
+import (
+	"aviasales"
+	"aviasales/Databases"
+)
 
 // AnketaService - сервис для работы с анкетами
 type AnketaService struct {
-	db *Database
+	db *Databases.Database
 }
 
 // NewAnketaService - конструктор
-func NewAnketaService(db *Database) *AnketaService {
+func NewAnketaService(db *Databases.Database) *AnketaService {
 	return &AnketaService{db: db}
 }
 
 // CreateAnketa - создание анкеты
-func (s *AnketaService) CreateAnketa(anketa Anketa) error {
+func (s *AnketaService) CreateAnketa(anketa main.Anketa) error {
 	return s.db.SaveAnketa(anketa)
 }
 
@@ -21,6 +26,6 @@ func (s *AnketaService) DeleteAnketa(id int) error {
 }
 
 // GetAnketa - получение анкеты по ID
-func (s *AnketaService) GetAnketa(id int) (Anketa, error) {
+func (s *AnketaService) GetAnketa(id int) (main.Anketa, error) {
 	return s.db.GetAnketa(id)
 }

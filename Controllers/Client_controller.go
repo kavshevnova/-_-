@@ -1,23 +1,25 @@
-package main
+package Controllers
 
 import (
+	"aviasales/Domain"
+	"aviasales/Services"
 	"encoding/json"
 	"net/http"
 )
 
 // контроллер для работы с пользователями
 type ClientController struct {
-	service *ClientService
+	service *Services.ClientService
 }
 
 // Конструктор
-func NewClientController(service *ClientService) *ClientController {
+func NewClientController(service *Services.ClientService) *ClientController {
 	return &ClientController{service: service}
 }
 
 // обработчик для создания
 func (c *ClientController) CreateClientHandler(w http.ResponseWriter, r *http.Request) {
-	var client Clients
+	var client Domain.Clients
 	if err := json.NewDecoder(r.Body).Decode(&client); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

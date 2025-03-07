@@ -1,6 +1,8 @@
-package main
+package Controllers
 
 import (
+	"aviasales"
+	"aviasales/Services"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -8,17 +10,17 @@ import (
 
 // AnketaController - контроллер для работы с анкетами
 type AnketaController struct {
-	service *AnketaService
+	service *Services.AnketaService
 }
 
 // NewAnketaController - конструктор
-func NewAnketaController(service *AnketaService) *AnketaController {
+func NewAnketaController(service *Services.AnketaService) *AnketaController {
 	return &AnketaController{service: service}
 }
 
 // CreateAnketaHandler - обработчик для создания анкеты
 func (c *AnketaController) CreateAnketaHandler(w http.ResponseWriter, r *http.Request) {
-	var anketa Anketa
+	var anketa main.Anketa
 	if err := json.NewDecoder(r.Body).Decode(&anketa); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -64,6 +66,6 @@ func (c *AnketaController) GetAnketaHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	go install github.com/swaggo/swag/cmd/swag@latest	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(anketa)
 }

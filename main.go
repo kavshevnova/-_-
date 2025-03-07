@@ -1,26 +1,16 @@
 package main
 
 import (
+	"aviasales/Controllers"
+	"aviasales/Databases"
+	"aviasales/Domain"
+	"aviasales/Services"
 	"encoding/json"
 	"net/http"
 )
 
-type Anketa struct {
-	Name        string `json:"name"`
-	Id          int    `json:"id"`
-	City        string `json:"city"`
-	Age         int    `json:"age"`
-	Weight      int    `json:"weight"`
-	Height      int    `json:"height"`
-	Boobs       int    `json:"bobs"`
-	HairColor   string `json:"hair_color"`
-	Nationality string `json:"nationality"`
-	District    string `json:"district"`
-	Price       int    `json:"price"`
-}
-
 func anketaHandler(w http.ResponseWriter, r *http.Request) {
-	anketa := Anketa{
+	anketa := Domain.Anketa{
 		Name:        "Мишель",
 		Id:          123,
 		City:        "Moscow",
@@ -43,24 +33,38 @@ func clientsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(client)
 }
 
+func NewClients(name string, rating int) Domain.Clients {
+	return Domain.Clients{
+		Name:   name,
+		Rating: rating,
+	}
+}
+
 func main() {
 
-	http.HandleFunc("/anketa", anketaHandler)
-	http.HandleFunc("/client", clientsHandler)
+	http.HandleFunc("/examleanketa", anketaHandler)
+	http.HandleFunc("/exampleclient", clientsHandler)
 
-	db := NewDatabase()
-	anketaService := NewAnketaService(db)
-	anketaController := NewAnketaController(anketaService)
-	http.HandleFunc("/anketa/create", anketaController.CreateAnketaHandler)
-	http.HandleFunc("/anketa/delete", anketaController.DeleteAnketaHandler)
-	http.HandleFunc("/anketa/get", anketaController.GetAnketaHandler)
-	bd := NewDatabase_clients()
-	clientService := NewClientService(bd)
-	clientController := NewClientController(clientService)
-	http.HandleFunc("/client/create", clientController.CreateClientHandler)
-	http.HandleFunc("/client/delete", clientController.DeleteClientHandler)
-	http.HandleFunc("/client/get", clientController.GetClientHandler)
+	setapAnketaHandlers()
+	setapClientHandler()
 
 	http.ListenAndServe(":8080", nil)
 
+}
+
+func setapAnketaHandlers() {
+	db := Databases.NewDatabase()
+	anketaService := Services.NewAnketaService(db)
+	anketaController := Controllers.NewAnketaController(anketaService)
+	http.HandleFunc("/anketa/create", anketaController.CreateAnketaHandler)
+	http.HandleFunc("/anketa/delete", anketaController.DeleteAnketaHandler)
+	http.HandleFunc("/anketa/get", anketaController.GetAnketaHandler)
+}
+func setapClientHandler() {
+	bd := Databases.NewDatabase_clients()
+	clientService := Services.NewClientService(bd)
+	clientController := Controllers.NewClientController(clientService)
+	http.HandleFunc("/client/create", clientController.CreateClientHandler)
+	http.HandleFunc("/client/delete", clientController.DeleteClientHandler)
+	http.HandleFunc("/client/get", clientController.GetClientHandler)
 }

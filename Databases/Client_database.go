@@ -1,6 +1,7 @@
-package main
+package Databases
 
 import (
+	"aviasales/Domain"
 	"errors"
 	"sync"
 )
@@ -8,16 +9,16 @@ import (
 // Database - хранилище данных для клиентов
 type Database_clients struct {
 	mu      sync.RWMutex
-	clients map[string]Clients
+	clients map[string]Domain.Clients
 }
 
 // Конструктор (для создания и инициализации нового экземпляра Database)
 func NewDatabase_clients() *Database_clients {
-	return &Database_clients{clients: make(map[string]Clients)}
+	return &Database_clients{clients: make(map[string]Domain.Clients)}
 }
 
 // сохранение пользователя в хранилище (карте clients)
-func (bd *Database_clients) SaveClient(client Clients) error {
+func (bd *Database_clients) SaveClient(client Domain.Clients) error {
 	bd.mu.Lock()
 	defer bd.mu.Unlock()
 
@@ -38,13 +39,13 @@ func (bd *Database_clients) DeleteClient(name string) error {
 }
 
 // GetAnketa - получение пользователя по имени
-func (bd *Database_clients) GetClient(name string) (Clients, error) {
+func (bd *Database_clients) GetClient(name string) (Domain.Clients, error) {
 	bd.mu.RLock()
 	defer bd.mu.RUnlock()
 
 	client, exists := bd.clients[name]
 	if !exists {
-		return Clients{}, ErrClientNotFound
+		return Domain.Clients{}, ErrClientNotFound
 	}
 
 	return client, nil
