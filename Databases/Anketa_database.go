@@ -1,7 +1,6 @@
 package Databases
 
 import (
-	"ankets_and_clients"
 	"ankets_and_clients/Domain"
 	"errors"
 	"sync"
