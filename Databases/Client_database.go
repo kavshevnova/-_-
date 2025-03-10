@@ -1,7 +1,7 @@
 package Databases
 
 import (
-	"aviasales/Domain"
+	"ankets_and_clients/Domain"
 	"errors"
 	"sync"
 )

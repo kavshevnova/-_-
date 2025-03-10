@@ -1,8 +1,9 @@
 package Services
 
 import (
-	"aviasales"
-	"aviasales/Databases"
+	"ankets_and_clients"
+	"ankets_and_clients/Databases"
+	"ankets_and_clients/Domain"
 )
 
 // AnketaService - сервис для работы с анкетами
@@ -16,7 +17,7 @@ func NewAnketaService(db *Databases.Database) *AnketaService {
 }
 
 // CreateAnketa - создание анкеты
-func (s *AnketaService) CreateAnketa(anketa main.Anketa) error {
+func (s *AnketaService) CreateAnketa(anketa Domain.Anketa) error {
 	return s.db.SaveAnketa(anketa)
 }
 
@@ -26,6 +27,6 @@ func (s *AnketaService) DeleteAnketa(id int) error {
 }
 
 // GetAnketa - получение анкеты по ID
-func (s *AnketaService) GetAnketa(id int) (main.Anketa, error) {
+func (s *AnketaService) GetAnketa(id int) (Domain.Anketa, error) {
 	return s.db.GetAnketa(id)
 }

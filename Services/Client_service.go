@@ -1,8 +1,8 @@
 package Services
 
 import (
-	"aviasales/Databases"
-	"aviasales/Domain"
+	"ankets_and_clients/Databases"
+	"ankets_and_clients/Domain"
 )
 
 type ClientService struct {

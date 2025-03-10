@@ -1,7 +1,8 @@
 package Databases
 
 import (
-	"aviasales"
+	"ankets_and_clients"
+	"ankets_and_clients/Domain"
 	"errors"
 	"sync"
 )
@@ -9,11 +10,11 @@ import (
 // Database - хранилище данных для анкет
 type Database struct {
 	mu     sync.RWMutex
-	ankets map[int]main.Anketa
+	ankets map[int]Domain.Anketa
 }
 
 func (db *Database) init() {
-	anketa := main.Anketa{
+	anketa := Domain.Anketa{
 		Name:        "Мишель",
 		Id:          123,
 		City:        "Moscow",
@@ -32,14 +33,14 @@ func (db *Database) init() {
 // NewDatabase - конструктор (для создания и инициализации нового экземпляра Database)
 func NewDatabase() *Database {
 	db := &Database{
-		ankets: make(map[int]main.Anketa),
+		ankets: make(map[int]Domain.Anketa),
 	}
 	db.init()
 	return db
 }
 
 // Метод SaveAnketa - сохранение анкеты в хранилище (карте ankets)
-func (db *Database) SaveAnketa(anketa main.Anketa) error {
+func (db *Database) SaveAnketa(anketa Domain.Anketa) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
@@ -60,13 +61,13 @@ func (db *Database) DeleteAnketa(id int) error {
 }
 
 // GetAnketa - получение анкеты по ID
-func (db *Database) GetAnketa(id int) (main.Anketa, error) {
+func (db *Database) GetAnketa(id int) (Domain.Anketa, error) {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
 
 	anketa, exists := db.ankets[id]
 	if !exists {
-		return main.Anketa{}, ErrAnketaNotFound
+		return Domain.Anketa{}, ErrAnketaNotFound
 	}
 
 	return anketa, nil

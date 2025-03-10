@@ -1,10 +1,10 @@
 package main
 
 import (
-	"aviasales/Controllers"
-	"aviasales/Databases"
-	"aviasales/Domain"
-	"aviasales/Services"
+	"ankets_and_clients/Controllers"
+	"ankets_and_clients/Databases"
+	"ankets_and_clients/Domain"
+	"ankets_and_clients/Services"
 	"encoding/json"
 	"net/http"
 )

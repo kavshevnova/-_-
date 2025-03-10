@@ -1,8 +1,8 @@
 package Controllers
 
 import (
-	"aviasales/Domain"
-	"aviasales/Services"
+	"ankets_and_clients/Domain"
+	"ankets_and_clients/Services"
 	"encoding/json"
 	"net/http"
 )
