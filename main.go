@@ -5,6 +5,7 @@ import (
 	"ankets_and_clients/Databases"
 	"ankets_and_clients/Domain"
 	"ankets_and_clients/Services"
+	logger "ankets_and_clients/internal/package"
 	"encoding/json"
 	"net/http"
 )
@@ -42,28 +43,32 @@ func NewClients(name string, rating int) Domain.Clients {
 
 func main() {
 
+	logger := logger.NewLogger("Main")
+	logger.Log("Starting the application...")
+
 	http.HandleFunc("/examleanketa", anketaHandler)
 	http.HandleFunc("/exampleclient", clientsHandler)
 
-	setapAnketaHandlers()
-	setapClientHandler()
+	setapAnketaHandlers(logger)
+	setapClientHandler(logger)
 
+	logger.Log("Server is running on port 8080...")
 	http.ListenAndServe(":8080", nil)
 
 }
 
-func setapAnketaHandlers() {
+func setapAnketaHandlers(logger *logger.Logger) {
 	db := Databases.NewDatabase()
-	anketaService := Services.NewAnketaService(db)
-	anketaController := Controllers.NewAnketaController(anketaService)
+	anketaService := Services.NewAnketaService(db, logger)
+	anketaController := Controllers.NewAnketaController(anketaService, logger)
 	http.HandleFunc("/anketa/create", anketaController.CreateAnketaHandler)
 	http.HandleFunc("/anketa/delete", anketaController.DeleteAnketaHandler)
 	http.HandleFunc("/anketa/get", anketaController.GetAnketaHandler)
 }
-func setapClientHandler() {
+func setapClientHandler(logger *logger.Logger) {
 	bd := Databases.NewDatabase_clients()
-	clientService := Services.NewClientService(bd)
-	clientController := Controllers.NewClientController(clientService)
+	clientService := Services.NewClientService(bd, logger)
+	clientController := Controllers.NewClientController(clientService, logger)
 	http.HandleFunc("/client/create", clientController.CreateClientHandler)
 	http.HandleFunc("/client/delete", clientController.DeleteClientHandler)
 	http.HandleFunc("/client/get", clientController.GetClientHandler)

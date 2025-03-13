@@ -2,6 +2,7 @@ package Databases
 
 import (
 	"ankets_and_clients/Domain"
+	logger "ankets_and_clients/internal/package"
 	"errors"
 	"sync"
 )
@@ -10,6 +11,7 @@ import (
 type Database struct {
 	mu     sync.RWMutex
 	ankets map[int]Domain.Anketa
+	logger *logger.Logger
 }
 
 func (db *Database) init() {
@@ -40,6 +42,7 @@ func NewDatabase() *Database {
 
 // Метод SaveAnketa - сохранение анкеты в хранилище (карте ankets)
 func (db *Database) SaveAnketa(anketa Domain.Anketa) error {
+	db.logger.Log("Entering SaveAnketa")
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
@@ -49,6 +52,7 @@ func (db *Database) SaveAnketa(anketa Domain.Anketa) error {
 
 // DeleteAnketa - удаление анкеты по ID
 func (db *Database) DeleteAnketa(id int) error {
+	db.logger.Log("Entering SaveAnketa")
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
@@ -61,6 +65,7 @@ func (db *Database) DeleteAnketa(id int) error {
 
 // GetAnketa - получение анкеты по ID
 func (db *Database) GetAnketa(id int) (Domain.Anketa, error) {
+	db.logger.Log("Entering GetAnketa")
 	db.mu.RLock()
 	defer db.mu.RUnlock()
 

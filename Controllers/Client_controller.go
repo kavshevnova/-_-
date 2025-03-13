@@ -3,6 +3,7 @@ package Controllers
 import (
 	"ankets_and_clients/Domain"
 	"ankets_and_clients/Services"
+	logger "ankets_and_clients/internal/package"
 	"encoding/json"
 	"net/http"
 )
@@ -10,15 +11,17 @@ import (
 // контроллер для работы с пользователями
 type ClientController struct {
 	service *Services.ClientService
+	logger  *logger.Logger
 }
 
 // Конструктор
-func NewClientController(service *Services.ClientService) *ClientController {
-	return &ClientController{service: service}
+func NewClientController(service *Services.ClientService, logger *logger.Logger) *ClientController {
+	return &ClientController{service: service, logger: logger}
 }
 
 // обработчик для создания
 func (c *ClientController) CreateClientHandler(w http.ResponseWriter, r *http.Request) {
+	c.logger.Log("Entering CreateClientHandler")
 	var client Domain.Clients
 	if err := json.NewDecoder(r.Body).Decode(&client); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -34,6 +37,7 @@ func (c *ClientController) CreateClientHandler(w http.ResponseWriter, r *http.Re
 
 // обработчик для удаления
 func (c *ClientController) DeleteClientHandler(w http.ResponseWriter, r *http.Request) {
+	c.logger.Log("Entering DeleteClientHandler")
 	name := r.URL.Query().Get("name")
 	if name == "" {
 		http.Error(w, "Рюкзачник не найден", http.StatusBadRequest)
@@ -51,6 +55,7 @@ func (c *ClientController) DeleteClientHandler(w http.ResponseWriter, r *http.Re
 
 // GetAnketaHandler - обработчик для получения анкеты
 func (c *ClientController) GetClientHandler(w http.ResponseWriter, r *http.Request) {
+	c.logger.Log("Entering GetClientHandler")
 	name := r.URL.Query().Get("name")
 	if name == "" {
 		http.Error(w, "Рюкзачник не найден", http.StatusBadRequest)

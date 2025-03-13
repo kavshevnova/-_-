@@ -1,26 +1,27 @@
 package Controllers
 
 import (
-	"aviasales"
-	"aviasales/Services"
+	"ankets_and_clients/Domain"
+	"ankets_and_clients/Services"
+	logger "ankets_and_clients/internal/package"
 	"encoding/json"
 	"net/http"
 	"strconv"
 )
 
-// AnketaController - контроллер для работы с анкетами
 type AnketaController struct {
 	service *Services.AnketaService
+	logger *logger.Logger
 }
 
-// NewAnketaController - конструктор
-func NewAnketaController(service *Services.AnketaService) *AnketaController {
-	return &AnketaController{service: service}
+func NewAnketaController(service *Services.AnketaService, logger *logger.Logger) *AnketaController {
+	return &AnketaController{service: service, logger: logger}
 }
 
 // CreateAnketaHandler - обработчик для создания анкеты
 func (c *AnketaController) CreateAnketaHandler(w http.ResponseWriter, r *http.Request) {
-	var anketa main.Anketa
+	c.logger.Log("Entering CreateAnketaHandler")
+	var anketa Domain.Anketa
 	if err := json.NewDecoder(r.Body).Decode(&anketa); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -35,6 +36,7 @@ func (c *AnketaController) CreateAnketaHandler(w http.ResponseWriter, r *http.Re
 
 // DeleteAnketaHandler - обработчик для удаления анкеты
 func (c *AnketaController) DeleteAnketaHandler(w http.ResponseWriter, r *http.Request) {
+	c.logger.Log("Entering DeleteAnketaHandler")
 	idStr := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -53,6 +55,7 @@ func (c *AnketaController) DeleteAnketaHandler(w http.ResponseWriter, r *http.Re
 
 // GetAnketaHandler - обработчик для получения анкеты
 func (c *AnketaController) GetAnketaHandler(w http.ResponseWriter, r *http.Request) {
+	c.logger.Log("Entering GetAnketaHandler")
 	idStr := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
